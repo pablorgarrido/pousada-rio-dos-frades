@@ -46,12 +46,14 @@ header p{margin:4px 0 0;opacity:.85;font-size:15px}
 .bar i{display:block;height:100%;border-radius:8px;background:var(--c,var(--teal));transition:width .6s}
 .empty{color:var(--soft);margin:8px 0 0;font-size:15px}
 .tog{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px;padding-top:12px;border-top:1px dashed var(--line);font-size:15px;font-weight:600;cursor:pointer;min-height:44px}
+.tog small{display:block;font-size:13px;font-weight:600;color:var(--soft)}
 .tog input{appearance:none;-webkit-appearance:none;flex:none;width:48px;height:28px;border-radius:28px;background:var(--line);position:relative;cursor:pointer;margin:0;transition:background .2s}
 .tog input::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 2px #0003;transition:transform .2s}
 .tog input:checked{background:var(--teal)}
 .tog input:checked::after{transform:translateX(20px)}
 .sticky{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding-top:max(10px,env(safe-area-inset-top,0px));margin-top:18px}
 .mini{display:none;align-items:center;gap:8px;font-size:14px;font-weight:700;padding-bottom:8px;white-space:nowrap;overflow:hidden}
+.mini span{flex:0 1 auto}
 .mini b{font-family:Kalam,cursive;font-size:20px;color:var(--c,var(--teal));font-variant-numeric:tabular-nums}
 .mini span{overflow:hidden;text-overflow:ellipsis}
 .stuck .mini{display:flex}
@@ -116,7 +118,7 @@ header p{display:none}
 <div class="panel" id="panel">
 <div class="nx" id="next"></div>
 <div class="nw"><div id="now"></div>
-<label class="tog" for="only"><span>Contar só as marcadas <span id="cnt"></span></span><input type="checkbox" id="only" role="switch" checked></label>
+<label class="tog" for="only"><span>Contar só as marcadas<small id="cnt"></small></span><input type="checkbox" id="only" role="switch" checked></label>
 </div>
 </div>
 </div>
@@ -206,7 +208,7 @@ const dayName=d=>d===today?'hoje':DAYS.find(x=>x[0]===d)[1].toLowerCase();
 const star='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4-4.7-4.4 6.4-.8z"/></svg>';
 const $=id=>document.getElementById(id);
 const track=(event,data)=>{try{window.gtag&&window.gtag('event',event,data)}catch(e){}};
-const mine=()=>only&&fav.size>0;
+const mine=()=>only&&ev.some(x=>fav.has(x.id)&&x.b>Date.now());
 const pool=()=>mine()?ev.filter(x=>fav.has(x.id)):ev;
 
 function renderNow(){
@@ -217,23 +219,24 @@ function renderNow(){
     const same=up.filter(x=>x.a===nx.a).map(x=>x.n);
     const c=CAT[nx.c][1];
     $('next').style.setProperty('--c',c);
-    $('next').innerHTML=`<p class="lbl">${mine()?'Próxima marcada começa em':'Próxima atividade começa em'}</p><div class="big mk">${fmtBig(nx.a-t)}</div><p class="nname">${same.join(', ')}</p><p class="nmeta">${dayName(nx.d)} às ${nx.s}, até ${nx.e}${same.length===1&&nx.note?'. '+nx.note:''}</p>`;
+    $('next').innerHTML=`<p class="lbl">${mine()?'Próxima marcada inicia em':'Próxima atividade inicia em'}</p><div class="big mk">${fmtBig(nx.a-t)}</div><p class="nname">${same.join(', ')}</p><p class="nmeta">${dayName(nx.d)} às ${nx.s}, até ${nx.e}${same.length===1&&nx.note?'. '+nx.note:''}</p>`;
     $('mini').style.setProperty('--c',c);
-    $('mini').innerHTML=`<b>${fmt(nx.a-t)}</b><span>até ${same.join(', ')}</span>`;
+    $('mini').innerHTML=`<span>${same.join(', ')} inicia em</span><b>${fmt(nx.a-t)}</b>`;
   }else{
     $('next').innerHTML=`<p class="lbl">Próxima atividade</p><div class="big mk">fim</div><p class="nname">Nada ${mine()?'marcado ':''}pela frente</p><p class="nmeta">Boa volta pra casa.</p>`;
     $('mini').innerHTML='<span>Nada mais pela frente</span>';
   }
-  $('now').innerHTML=`<p class="lbl">Acontecendo agora</p>`+(cur.length?`<ul class="nowl">${cur.map(x=>`<li style="--c:${CAT[x.c][1]}"><div class="t"><span>${x.n}</span><span class="r">faltam ${fmt(x.b-t)}</span></div><div class="bar"><i style="width:${100-(t-x.a)/(x.b-x.a)*100}%"></i></div></li>`).join('')}</ul>`:`<p class="empty">${mine()?'Nenhuma marcada rolando agora.':'Nada rolando neste momento.'}</p>`);
-  $('cnt').textContent='('+fav.size+')';
+  $('now').innerHTML=`<p class="lbl">Acontecendo agora</p>`+(cur.length?`<ul class="nowl">${cur.map(x=>`<li style="--c:${CAT[x.c][1]}"><div class="t"><span>${x.n}</span><span class="r">termina em ${fmt(x.b-t)}</span></div><div class="bar"><i style="width:${100-(t-x.a)/(x.b-x.a)*100}%"></i></div></li>`).join('')}</ul>`:`<p class="empty">${mine()?'Nenhuma marcada rolando agora.':'Nada rolando neste momento.'}</p>`);
+  const ahead=ev.filter(x=>fav.has(x.id)&&x.b>t).length;
+  $('cnt').textContent=ahead?ahead+' marcada'+(ahead>1?'s':'')+' pela frente':'nenhuma marcada pela frente';
   $('only').checked=only;
 }
 
 function rowHTML(x,t){
   const c=CAT[x.c][1],on=x.a<=t&&t<x.b,past=t>=x.b;
   let st='';
-  if(on)st=` · <span class="st">faltam ${fmt(x.b-t)}</span>`;
-  else if(!past&&x.a-t<3*3600e3)st=` · <span class="st">em ${fmt(x.a-t)}</span>`;
+  if(on)st=` · <span class="st">termina em ${fmt(x.b-t)}</span>`;
+  else if(!past&&x.a-t<3*3600e3)st=` · <span class="st">inicia em ${fmt(x.a-t)}</span>`;
   return `<li class="row${on?' on':''}${past?' past':''}" style="--c:${c}"><div class="tm">${x.s}<small>até ${x.e}</small></div><div><h3>${x.n}</h3><p><span class="tag">${CAT[x.c][0]}</span>${st}</p>${x.note?`<p>${x.note}</p>`:''}${on?`<div class="bar"><i style="width:${100-(t-x.a)/(x.b-x.a)*100}%"></i></div>`:''}</div><button type="button" class="fav" data-id="${x.id}" aria-pressed="${fav.has(x.id)}" aria-label="Marcar ${x.n} às ${x.s}">${star}</button></li>`;
 }
 
