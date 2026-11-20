@@ -105,6 +105,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--blue);outline-o
 .row .tm{font-size:24px}
 header p{display:none}
 }
+.toast{position:fixed;left:50%;bottom:max(20px,env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);font-weight:700;font-size:15px;padding:12px 18px;border-radius:999px;box-shadow:0 4px 16px #0004;z-index:20;white-space:nowrap}
 @media(prefers-reduced-motion:reduce){.info summary::after,.bar i,.tog input,.tog input::after{transition:none}}
 </style>
 </head>
@@ -275,6 +276,27 @@ setInterval(renderList,30000);
 const roll=()=>{const t=calcToday();if(t!==today){const wasToday=day===pickDay(today);today=t;if(wasToday){day=pickDay(t);showPast=false}}all()};
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)roll()});
 setInterval(()=>{if(calcToday()!==today)roll()},60000);
+const live=/\.github\.io$/.test(location.hostname);
+let baseHash=null,reloading=false;
+const hash=t=>{let h=5381;for(let i=0;i<t.length;i++)h=(h*33^t.charCodeAt(i))>>>0;return h};
+async function checkVersion(){
+  if(!live||reloading)return;
+  try{
+    const r=await fetch(location.pathname+'?v='+Date.now(),{cache:'no-store'});
+    if(!r.ok)return;
+    const h=hash(await r.text());
+    if(baseHash===null){baseHash=h;return}
+    if(h!==baseHash){
+      reloading=true;
+      const t=document.createElement('div');t.className='toast';t.textContent='Nova versão, atualizando...';document.body.appendChild(t);
+      setTimeout(()=>location.reload(),1500);
+    }
+  }catch(e){}
+}
+checkVersion();
+setInterval(checkVersion,60000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkVersion()});
+
 }
 </script>
 </body>
