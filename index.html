@@ -75,9 +75,15 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--blue);outline-o
 .fav[aria-pressed=true]{color:#fff;background:var(--c);border-color:var(--c)}
 .pastbtn{width:100%;min-height:44px;margin:10px 0 2px;border:1.5px dashed var(--line);border-radius:12px;background:transparent;color:var(--soft);font:700 14px "Nunito Sans",sans-serif;cursor:pointer}
 .row.past{opacity:.5}
-.info{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;padding-top:28px;padding-bottom:28px}
-.info section{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px 18px}
-.info h2{font-size:26px;margin:0 0 6px}
+.info{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:start;padding-top:24px;padding-bottom:24px}
+.info details{background:var(--panel);border:1px solid var(--line);border-left:5px solid var(--c);border-radius:14px}
+.info summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:56px;padding:8px 16px;cursor:pointer}
+.info summary::-webkit-details-marker{display:none}
+.info summary::after{content:"";flex:none;width:10px;height:10px;border-right:2.5px solid var(--soft);border-bottom:2.5px solid var(--soft);transform:rotate(45deg) translate(-2px,-2px);transition:transform .2s}
+.info details[open] summary::after{transform:rotate(-135deg) translate(-2px,-2px)}
+.info summary:focus-visible{outline:3px solid var(--blue);outline-offset:2px;border-radius:12px}
+.info h2{font-size:24px;margin:0;color:var(--c)}
+.bd{padding:0 16px 14px}
 .info ul{margin:0;padding-left:18px;font-size:15px}
 .info li{margin-bottom:6px}
 .wifi{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:10px}
@@ -93,7 +99,7 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--blue);outline-o
 .row .tm{font-size:24px}
 header p{display:none}
 }
-@media(prefers-reduced-motion:reduce){.bar i,.tog input,.tog input::after{transition:none}}
+@media(prefers-reduced-motion:reduce){.info summary::after,.bar i,.tog input,.tog input::after{transition:none}}
 </style>
 </head>
 <body>
@@ -120,19 +126,19 @@ header p{display:none}
 <div class="wrap"><ul class="list" id="list"></ul></div>
 
 <div class="infobg"><div class="wrap info">
-<section><h2 style="color:var(--blue)">Regras dos lazeres</h2><ul>
+<details style="--c:var(--blue)"><summary><h2>Regras dos lazeres</h2></summary><div class="bd"><ul>
 <li>Toboágua só com roupa de banho, menor de 8 anos com responsável.</li>
 <li>Arvorismo com sapato fechado, a partir de 6 anos, abaixo de 1,30 m com responsável.</li>
 <li>Tirolesa a partir de 10 anos e até 105 kg, capacete e sapato fechado, sem estar molhado nem de roupa de banho. Não funciona com chuva, raio ou local molhado. Equipamento ao lado do campo de futebol.</li>
 <li>Na recreação, menores de 6 anos com responsável.</li>
-</ul></section>
-<section><h2 style="color:var(--red)">Refeições</h2><ul>
+</ul></div></details>
+<details style="--c:var(--red)"><summary><h2>Refeições</h2></summary><div class="bd"><ul>
 <li>Café da manhã de 08:00 às 10:00, todos os dias.</li>
 <li>Almoço de 12:00 às 14:30, e no domingo até 14:00.</li>
 <li>Jantar de 19:00 às 21:00 com música ao vivo, sexta queijos e vinhos, sábado boteco. Domingo não tem jantar.</li>
 <li>A mesa do restaurante é o número do quarto.</li>
-</ul></section>
-<section><h2 style="color:var(--teal)">Informações</h2><ul>
+</ul></div></details>
+<details style="--c:var(--teal)"><summary><h2>Informações</h2></summary><div class="bd"><ul>
 <li>Limpeza do quarto, deixar a chave na recepção das 9h às 14h (o folheto diz até 13h). Leva até 3 horas, e no dia da saída não tem.</li>
 <li>Recepção no ramal 9.</li>
 <li>Material de pesca e toalhas da piscina na recepção, devolver no fim.</li>
@@ -140,7 +146,7 @@ header p{display:none}
 </ul>
 <div class="wifi"><span>Wi-Fi</span><code>hotel123</code><button id="copy" type="button">Copiar senha</button></div>
 <p class="empty">Só nas áreas comuns, não pega nos quartos.</p>
-</section>
+</div></details>
 </div>
 <div class="wrap foot">Horários tirados dos quadros da recepção em 20/11. A recreação da Turma da Tia Paquita só tem programação para sexta.</div>
 </div>
