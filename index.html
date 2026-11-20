@@ -2,9 +2,9 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-T3JBL3WL');</script>
-<!-- End Google Tag Manager -->
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6LX7WNQ0VR"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-6LX7WNQ0VR');</script>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#5b3420">
@@ -107,7 +107,6 @@ header p{display:none}
 </style>
 </head>
 <body>
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T3JBL3WL" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <header><div class="wrap">
 <h1>Rio dos Frades</h1>
 <p>Agenda de sexta a domingo. Marque a estrela do que interessa e o quadro conta o tempo pra você.</p>
@@ -206,7 +205,7 @@ const fmtBig=ms=>{const s=Math.max(0,Math.floor(ms/1000)),m=Math.floor(s/60),h=M
 const dayName=d=>d===today?'hoje':DAYS.find(x=>x[0]===d)[1].toLowerCase();
 const star='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4-4.7-4.4 6.4-.8z"/></svg>';
 const $=id=>document.getElementById(id);
-const track=(event,data)=>{try{(window.dataLayer=window.dataLayer||[]).push({event,...data})}catch(e){}};
+const track=(event,data)=>{try{window.gtag&&window.gtag('event',event,data)}catch(e){}};
 const mine=()=>only&&fav.size>0;
 const pool=()=>mine()?ev.filter(x=>fav.has(x.id)):ev;
 
