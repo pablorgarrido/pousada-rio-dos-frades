@@ -160,7 +160,7 @@ header p{display:none}
 </div>
 <div class="wrap foot">
 <p class="legal">Projeto feito por Pablo Garrido para uso pessoal e não comercial, só para acompanhar a programação durante a minha hospedagem no Hotel Fazenda Rio dos Frades. Não é um projeto permanente nem tem ligação oficial com o hotel. Se o Rio dos Frades quiser que este conteúdo seja retirado, é só entrar em contato que removo na hora, pelo e-mail <a href="mailto:pablorgarrido@gmail.com">pablorgarrido@gmail.com</a>.</p>
-<p>Horários tirados dos quadros da recepção em 20/11. A recreação da Turma da Tia Paquita só tem programação para sexta.</p>
+<p>Horários tirados dos quadros da recepção. Recreação de sábado atualizada com o quadro da noite de 20/11. Domingo ainda sem programação de recreação.</p>
 </div>
 </div>
 
@@ -189,6 +189,7 @@ for(const [d] of DAYS){
   add(d,'ref','Jantar','19:00','21:00',d==='2026-11-20'?'Queijos e vinhos, música ao vivo':'Boteco, música ao vivo');
 }
 [['09:30','09:40','Alongamento matinal'],['09:40','10:00','Fazendinha'],['10:00','11:00','Pescaria','Material de pesca na recepção'],['11:00','11:30','Torta na cara'],['11:30','12:00','Vôlei'],['12:00','13:00','Skibumbum'],['14:30','15:30','Passaporte'],['15:30','16:00','Skigrama'],['16:00','17:00','Pique bandeirinha'],['17:00','17:30','Futebol'],['17:30','18:00','Encontro com Lorenzetti'],['20:30','22:00','Atividade noturna'],['22:00','23:00','Pique Japa']].forEach(r=>add('2026-11-20','rec',r[2],r[0],r[1],r[3]||N.tia));
+[['09:30','09:40','Alongamento matinal'],['09:40','10:00','Visita à horta','Nome meio apagado no quadro'],['10:00','11:00','Pescaria','Material de pesca na recepção'],['11:00','11:30','Vôlei'],['11:30','12:00','Desafio da bexiga'],['12:00','13:00','Skibumbum e hidrodança'],['14:30','15:30','Mestre Cuca'],['15:30','16:00','Acampamento inimigo'],['16:00','17:00','Queimado'],['16:00','17:00','Bingo recreativo para adultos','Só para adultos, duração não informada'],['17:00','17:30','Entrega dos biscoitos'],['17:30','18:00','Banho xuá xuá'],['20:30','21:30','Bandeirão noturno'],['21:30','22:00','Fogueira'],['22:00','23:00','Morfeu','Hora de dormir']].forEach(r=>add('2026-11-21','rec',r[2],r[0],r[1],r[3]||N.tia));
 ev.sort((x,y)=>x.a-y.a||x.b-y.b);
 
 const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
